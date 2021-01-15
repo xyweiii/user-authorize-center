@@ -2,8 +2,8 @@ package com.plover.user.mapper;
 
 import com.plover.user.form.StaffQueryForm;
 import com.plover.user.model.Staff;
-import com.plover.user.model.User;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -53,18 +53,18 @@ public interface StaffMapper {
     /**
      * 新增
      *
-     * @param user
+     * @param staff
      * @return
      */
-    int add(Staff user);
+    int add(Staff staff);
 
     /**
      * 更新
      *
-     * @param user
+     * @param staff
      * @return
      */
-    int update(Staff user);
+    int update(Staff staff);
 
     /**
      * 删除
@@ -72,5 +72,5 @@ public interface StaffMapper {
      * @param id
      * @return
      */
-    int deleteById(Integer id, String updateBy);
+    int deleteById(@Param("id") Integer id, @Param("updateBy") String updateBy);
 }

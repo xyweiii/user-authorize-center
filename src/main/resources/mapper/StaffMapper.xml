@@ -280,9 +280,9 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
-    <update id="deleteById" parameterType="java.lang.Integer">
+    <update id="deleteById">
      update  staff set deleted = 1,updateBy=#{updateBy}
-    where id = #{id,jdbcType=INTEGER}
+     where id = #{id,jdbcType=INTEGER}
     </update>
 
 </mapper>
