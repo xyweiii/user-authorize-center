@@ -76,7 +76,7 @@
         select
         <include refid="Base_Column_List"/>
         from staff
-        where userName = #{userName,jdbcType=INTEGER}
+        where deleted = 0 and userName = #{userName,jdbcType=INTEGER}
     </select>
 
     <insert id="add" parameterType="com.plover.user.model.Staff">

@@ -91,7 +91,7 @@ public class StaffController {
         } catch (Exception e) {
             log.error("staff add occur error", e);
             resp.setCode(HttpBizCode.SYSERROR.getCode());
-            resp.setMessage("系统异常");
+            resp.setMessage(e.getMessage());
         }
         return resp;
     }
@@ -123,7 +123,7 @@ public class StaffController {
         } catch (Exception e) {
             log.error("staff update occur error", e);
             resp.setCode(HttpBizCode.SYSERROR.getCode());
-            resp.setMessage("系统异常");
+            resp.setMessage(e.getMessage());
         }
         return resp;
     }
@@ -149,12 +149,12 @@ public class StaffController {
             int result = staffBiz.delete(id, user.getUpdateBy());
             if (result == 0) {
                 resp.setCode(HttpBizCode.BIZERROR.getCode());
-                resp.setMessage("更新失败");
+                resp.setMessage("删除失败");
             }
         } catch (Exception e) {
             log.error("staff update occur error", e);
             resp.setCode(HttpBizCode.SYSERROR.getCode());
-            resp.setMessage("系统异常");
+            resp.setMessage(e.getMessage());
         }
         return resp;
     }
@@ -181,7 +181,7 @@ public class StaffController {
         } catch (Exception e) {
             log.error("staff importExcel occur error", e);
             resp.setCode(HttpBizCode.SYSERROR.getCode());
-            resp.setMessage("系统异常");
+            resp.setMessage(e.getMessage());
         }
         return resp;
     }
