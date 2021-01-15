@@ -1,0 +1,36 @@
+server:
+  port: 8001
+
+spring:
+  application:
+    name: user-center
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/user_center?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false
+    username: root
+    password: pass
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      maximum-pool-size: 10
+      connection-timeout: 5000
+      idle-timeout: 180000
+
+  session:
+    store-type: redis
+  redis:
+    host: 127.0.0.1
+    port: 6379
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+
+logging:
+  file.max-history: 2
+  file.max-size: 100MB
+  file:
+    path: /data/logs/user-center/
+  level:
+    root: info
+    com:
+      nexgo: info

@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.plover.user.mapper.StaffMapper">
+    <resultMap id="BaseResultMap" type="com.plover.user.model.Staff">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="userName" jdbcType="VARCHAR" property="userName"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="realName" jdbcType="VARCHAR" property="realName"/>
+        <result column="idNumber" jdbcType="VARCHAR" property="idNumber"/>
+        <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
+        <result column="sex" jdbcType="VARCHAR" property="sex"/>
+        <result column="birthDay" jdbcType="VARCHAR" property="birthDay"/>
+        <result column="ntPlaceCode" jdbcType="VARCHAR" property="ntPlaceCode"/>
+        <result column="ntPlaceName" jdbcType="VARCHAR" property="ntPlaceName"/>
+        <result column="birthPlaceCode" jdbcType="VARCHAR" property="birthPlaceCode"/>
+        <result column="birthPlaceName" jdbcType="VARCHAR" property="birthPlaceName"/>
+        <result column="nation" jdbcType="VARCHAR" property="nation"/>
+        <result column="marriage" jdbcType="VARCHAR" property="marriage"/>
+        <result column="permanreside" jdbcType="VARCHAR" property="permanreside"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="technical" jdbcType="VARCHAR" property="technical"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="deleted" jdbcType="TINYINT" property="deleted"/>
+        <result column="createDate" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="createBy" jdbcType="VARCHAR" property="createBy"/>
+        <result column="updateDate" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="updateBy" jdbcType="VARCHAR" property="updateBy"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, userName, email, realName, idNumber, mobile, sex, birthDay, ntPlaceCode, ntPlaceName, 
+    birthPlaceCode, birthPlaceName, nation, marriage, permanreside, address, technical, status, deleted,
+    createDate, createBy, updateDate, updateBy
+  </sql>
+
+    <select id="list" parameterType="com.plover.user.form.StaffQueryForm" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from staff
+        where deleted = 0
+        <if test="userName != null and userName!='' ">
+            and userName like concat('%',#{userName},'%')
+        </if>
+        <if test="realName != null and realName!='' ">
+            and realName like concat('%',#{realName},'%')
+        </if>
+        <if test="mobile != null and mobile!='' ">
+            and mobile like concat('%',#{mobile},'%')
+        </if>
+        order by updateDate desc
+        limit #{start },#{limit}
+    </select>
+
+    <select id="count" parameterType="com.plover.user.form.UserQueryForm" resultType="java.lang.Integer">
+        select count(1)
+        from staff
+        where deleted = 0
+        <if test="userName != null and userName!='' ">
+            and userName like concat('%',#{userName},'%')
+        </if>
+        <if test="realName != null and realName!='' ">
+            and realName like concat('%',#{realName},'%')
+        </if>
+        <if test="mobile != null and mobile!='' ">
+            and mobile like concat('%',#{mobile},'%')
+        </if>
+    </select>
+
+    <select id="findById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from staff
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="findByUserName" resultType="com.plover.user.model.Staff">
+        select
+        <include refid="Base_Column_List"/>
+        from staff
+        where userName = #{userName,jdbcType=INTEGER}
+    </select>
+
+    <insert id="add" parameterType="com.plover.user.model.Staff">
+        insert into staff
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userName != null">
+                userName,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="realName != null">
+                realName,
+            </if>
+            <if test="idNumber != null">
+                idNumber,
+            </if>
+            <if test="mobile != null">
+                mobile,
+            </if>
+            <if test="sex != null">
+                sex,
+            </if>
+            <if test="birthDay != null">
+                birthDay,
+            </if>
+            <if test="ntPlaceCode != null">
+                ntPlaceCode,
+            </if>
+            <if test="ntPlaceName != null">
+                ntPlaceName,
+            </if>
+            <if test="birthPlaceCode != null">
+                birthPlaceCode,
+            </if>
+            <if test="birthPlaceName != null">
+                birthPlaceName,
+            </if>
+            <if test="nation != null">
+                nation,
+            </if>
+            <if test="marriage != null">
+                marriage,
+            </if>
+            <if test="permanreside != null">
+                permanreside,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+            <if test="technical != null">
+                technical,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="deleted != null">
+                deleted,
+            </if>
+            <if test="createBy != null">
+                createBy,
+            </if>
+            <if test="updateBy != null">
+                updateBy,
+            </if>
+            createDate,updateDate
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="userName != null">
+                #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="realName != null">
+                #{realName,jdbcType=VARCHAR},
+            </if>
+            <if test="idNumber != null">
+                #{idNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null">
+                #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="sex != null">
+                #{sex,jdbcType=VARCHAR},
+            </if>
+            <if test="birthDay != null">
+                #{birthDay,jdbcType=VARCHAR},
+            </if>
+            <if test="ntPlaceCode != null">
+                #{ntPlaceCode,jdbcType=VARCHAR},
+            </if>
+            <if test="ntPlaceName != null">
+                #{ntPlaceName,jdbcType=VARCHAR},
+            </if>
+            <if test="birthPlaceCode != null">
+                #{birthPlaceCode,jdbcType=VARCHAR},
+            </if>
+            <if test="birthPlaceName != null">
+                #{birthPlaceName,jdbcType=VARCHAR},
+            </if>
+            <if test="nation != null">
+                #{nation,jdbcType=VARCHAR},
+            </if>
+            <if test="marriage != null">
+                #{marriage,jdbcType=VARCHAR},
+            </if>
+            <if test="permanreside != null">
+                #{permanreside,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="technical != null">
+                #{technical,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+            <if test="deleted != null">
+                #{deleted,jdbcType=TINYINT},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            NOW(),NOW()
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.plover.user.model.Staff">
+        update staff
+        <set>
+            <if test="userName != null">
+                userName = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="realName != null">
+                realName = #{realName,jdbcType=VARCHAR},
+            </if>
+            <if test="idNumber != null">
+                idNumber = #{idNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null">
+                mobile = #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="sex != null">
+                sex = #{sex,jdbcType=VARCHAR},
+            </if>
+            <if test="birthDay != null">
+                birthDay = #{birthDay,jdbcType=VARCHAR},
+            </if>
+            <if test="ntPlaceCode != null">
+                ntPlaceCode = #{ntPlaceCode,jdbcType=VARCHAR},
+            </if>
+            <if test="ntPlaceName != null">
+                ntPlaceName = #{ntPlaceName,jdbcType=VARCHAR},
+            </if>
+            <if test="birthPlaceCode != null">
+                birthPlaceCode = #{birthPlaceCode,jdbcType=VARCHAR},
+            </if>
+            <if test="birthPlaceName != null">
+                birthPlaceName = #{birthPlaceName,jdbcType=VARCHAR},
+            </if>
+            <if test="nation != null">
+                nation = #{nation,jdbcType=VARCHAR},
+            </if>
+            <if test="marriage != null">
+                marriage = #{marriage,jdbcType=VARCHAR},
+            </if>
+            <if test="permanreside != null">
+                permanreside = #{permanreside,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                address = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="technical != null">
+                technical = #{technical,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="deleted != null">
+                deleted = #{deleted,jdbcType=TINYINT},
+            </if>
+            <if test="updateBy != null">
+                updateBy = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            updateDate = NOW()
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="deleteById" parameterType="java.lang.Integer">
+     update  staff set deleted = 1,updateBy=#{updateBy}
+    where id = #{id,jdbcType=INTEGER}
+    </update>
+
+</mapper>
