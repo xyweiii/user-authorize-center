@@ -3,11 +3,14 @@ package com.plover.user.controller;
 import com.plover.user.common.Constants;
 import com.plover.user.common.HttpBizCode;
 import com.plover.user.common.Response;
+import com.plover.user.model.Staff;
 import com.plover.user.model.User;
+import com.plover.user.service.StaffService;
 import com.plover.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,7 +37,14 @@ public class LoginController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private StaffService staffService;
+
+    @Value("${spring.profiles.active}")
+    private String env;
+
     /**
+     * 工作人员登陆
      * 用户登陆统一认证平台
      *
      * @return
@@ -50,18 +60,21 @@ public class LoginController {
                 resp.fill(HttpBizCode.ILLEGAL, "用户名和密码不能为空");
                 return resp;
             }
+            Staff staff = staffService.findByUserName(userName);
+            if (staff == null) {
+                resp.fill(HttpBizCode.ILLEGAL, "用户不存在");
+                return resp;
+            }
             Boolean checkDomain = this.checkDomain(userName, password);
             //域登陆成功
             if (checkDomain) {
-                User user = handleDomainUser(userName, password);
                 HttpSession session = request.getSession(true);
-                session.setAttribute("user", user);
+                session.setAttribute("user", staff);
                 resp.setData(session.getId());
             } else {
                 resp.setCode(HttpBizCode.ILLEGAL.getCode());
                 resp.setMessage("身份校验失败");
             }
-            return resp;
         } catch (Exception e) {
             log.error("login occur error");
             resp.setCode(HttpBizCode.SYSERROR.getCode());
@@ -78,6 +91,9 @@ public class LoginController {
      * @return
      */
     public boolean checkDomain(String uid, String pwd) {
+        if (!StringUtils.equals("prod", env)) {
+            return true;
+        }
         //AD域ip
         String host = "10.123.0.7";
         //域名 后缀
@@ -94,7 +110,6 @@ public class LoginController {
         //LDAP 工厂类
         env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
         env.put(Context.PROVIDER_URL, url);
-
         try {
             ctx = new InitialDirContext(env);
             log.info("身份验证成功");

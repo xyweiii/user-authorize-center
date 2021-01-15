@@ -34,15 +34,15 @@ public class UserController {
      * @return
      */
     @GetMapping(value = "/getCurrentUser")
-    public Response<User> getCurrentUser(HttpServletRequest request) {
-        Response<User> resp = new Response<>();
-        User user = (User) request.getSession().getAttribute("user");
-        if (user == null) {
+    public Response getCurrentUser(HttpServletRequest request) {
+        Response resp = new Response<>();
+        Object object = request.getSession().getAttribute("user");
+        if (object == null) {
             resp.setCode(HttpBizCode.NOT_EXISTS.getCode());
             resp.setMessage("user info not exist");
             return resp;
         }
-        resp.setData(user);
+        resp.setData(object);
         return resp;
     }
 
