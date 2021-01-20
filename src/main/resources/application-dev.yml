@@ -4,6 +4,9 @@ server:
 spring:
   application:
     name: user-center
+  servlet:
+    multipart:
+      max-file-size: 10MB
 
   datasource:
     url: jdbc:mysql://localhost:3306/user_center?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false

@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.plover</groupId>
-    <artifactId>user-center</artifactId>
+    <artifactId>user-authorize-center</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>user-center</name>
+    <name>user-authorize-center</name>
     <description>用户,角色,权限统一管理中心</description>
 
     <properties>

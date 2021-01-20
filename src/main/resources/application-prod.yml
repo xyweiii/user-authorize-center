@@ -4,11 +4,14 @@ server:
 spring:
   application:
     name: user-center
+  servlet:
+    multipart:
+      max-file-size: 10MB
 
   datasource:
     url: jdbc:mysql://10.123.0.73:3306/user_center?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false
-    username: root
-    password: pass
+    username: action
+    password: DB123456!
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.zaxxer.hikari.HikariDataSource
     hikari:

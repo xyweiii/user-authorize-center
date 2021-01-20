@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.plover.authorize.mapper.AppMapper">
+    <resultMap id="BaseResultMap" type="com.plover.authorize.model.App">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="appName" jdbcType="VARCHAR" property="appName"/>
+        <result column="appUrl" jdbcType="VARCHAR" property="appUrl"/>
+        <result column="appId" jdbcType="VARCHAR" property="appId"/>
+        <result column="deleted" jdbcType="INTEGER" property="deleted"/>
+        <result column="createBy" jdbcType="VARCHAR" property="createBy"/>
+        <result column="createDate" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="updateBy" jdbcType="VARCHAR" property="updateBy"/>
+        <result column="updateDate" jdbcType="TIMESTAMP" property="updateDate"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, appName, appUrl, appId, deleted, createBy, createDate, updateBy, updateDate
+    </sql>
+
+    <select id="list" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from app
+        where deleted=0  order by updateDate desc
+    </select>
+
+    <select id="findById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from app
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <insert id="add" parameterType="com.plover.authorize.model.App">
+        insert into app
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="appName != null">
+                appName,
+            </if>
+            <if test="appUrl != null">
+                appUrl,
+            </if>
+            <if test="appId != null">
+                appId,
+            </if>
+            <if test="deleted != null">
+                deleted,
+            </if>
+            <if test="createBy != null">
+                createBy,
+            </if>
+            <if test="updateBy != null">
+                updateBy,
+            </if>
+            createDate, updateDate
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="appName != null">
+                #{appName,jdbcType=VARCHAR},
+            </if>
+            <if test="appUrl != null">
+                #{appUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="appId != null">
+                #{appId,jdbcType=VARCHAR},
+            </if>
+            <if test="deleted != null">
+                #{deleted,jdbcType=INTEGER},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            NOW(),NOW()
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.plover.authorize.model.App">
+        update app
+        <set>
+            <if test="appName != null">
+                appName = #{appName,jdbcType=VARCHAR},
+            </if>
+            <if test="appUrl != null">
+                appUrl = #{appUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="appId != null">
+                appId = #{appId,jdbcType=VARCHAR},
+            </if>
+            <if test="deleted != null">
+                deleted = #{deleted,jdbcType=INTEGER},
+            </if>
+            <if test="updateBy != null">
+                updateBy = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            updateDate = NOW()
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+
+    <delete id="deleteById">
+    update app set  deleted = 1,updateBy =  #{updateBy}
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+</mapper>

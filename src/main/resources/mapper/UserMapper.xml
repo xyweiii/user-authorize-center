@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.plover.user.mapper.UserMapper">
-    <resultMap id="BaseResultMap" type="com.plover.user.model.User">
+<mapper namespace="com.plover.authorize.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="com.plover.authorize.model.User">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="userName" jdbcType="VARCHAR" property="userName"/>
         <result column="password" jdbcType="VARCHAR" property="password"/>
@@ -21,7 +21,7 @@
     createDate, updateDate, createBy, updateBy
    </sql>
 
-    <select id="list" parameterType="com.plover.user.form.UserQueryForm" resultMap="BaseResultMap">
+    <select id="list" parameterType="com.plover.authorize.form.UserQueryForm" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from user
@@ -33,7 +33,7 @@
         limit #{start },#{limit}
     </select>
 
-    <select id="count" parameterType="com.plover.user.form.UserQueryForm" resultType="java.lang.Integer">
+    <select id="count" parameterType="com.plover.authorize.form.UserQueryForm" resultType="java.lang.Integer">
         select count(1)
         from user
         where deleted = 0 and userName !='admin'
@@ -49,14 +49,14 @@
         where id = #{id,jdbcType=INTEGER}
     </select>
 
-    <select id="findByUserName" resultType="com.plover.user.model.User">
+    <select id="findByUserName" resultType="com.plover.authorize.model.User">
         select
         <include refid="Base_Column_List"/>
         from user
         where userName = #{userName,jdbcType=INTEGER}
     </select>
 
-    <insert id="add" parameterType="com.plover.user.model.User">
+    <insert id="add" parameterType="com.plover.authorize.model.User">
         insert into user
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -136,7 +136,7 @@
         </trim>
     </insert>
 
-    <update id="update" parameterType="com.plover.user.model.User">
+    <update id="update" parameterType="com.plover.authorize.model.User">
         update user
         <set>
             <if test="userName != null">
