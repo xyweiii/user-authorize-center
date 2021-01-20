@@ -33,7 +33,7 @@ public class StaffRoleController {
      *
      * @return
      */
-    @PostMapping(value = "/list")
+    @GetMapping(value = "/list")
     public Response<List<StaffRoleEntity>> list(HttpServletRequest request) {
         Response<List<StaffRoleEntity>> resp = new Response<>();
         User user = (User) request.getSession().getAttribute("user");

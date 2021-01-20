@@ -107,7 +107,7 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
-    <delete id="deleteById" parameterType="java.lang.Integer">
+    <delete id="deleteById">
     update staff_role set deleted = 1 ,updateBy = #{updateBy}
     where id = #{id,jdbcType=INTEGER}
    </delete>
