@@ -107,9 +107,9 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
-    <delete id="deleteById">
+    <update id="deleteById">
     update staff_role set deleted = 1 ,updateBy = #{updateBy}
     where id = #{id,jdbcType=INTEGER}
-   </delete>
+   </update>
 
 </mapper>

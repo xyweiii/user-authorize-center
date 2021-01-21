@@ -106,9 +106,9 @@
     </update>
 
 
-    <delete id="deleteById">
+    <update id="deleteById">
     update app set  deleted = 1,updateBy =  #{updateBy}
     where id = #{id,jdbcType=INTEGER}
-  </delete>
+  </update>
 
 </mapper>
