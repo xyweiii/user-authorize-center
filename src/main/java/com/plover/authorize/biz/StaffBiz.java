@@ -4,13 +4,17 @@ import com.plover.authorize.common.PageList;
 import com.plover.authorize.entity.StaffEntity;
 import com.plover.authorize.form.StaffQueryForm;
 import com.plover.authorize.model.Staff;
+import com.plover.authorize.model.StaffRole;
+import com.plover.authorize.service.StaffRoleService;
 import com.plover.authorize.service.StaffService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,6 +33,9 @@ public class StaffBiz {
 
     @Autowired
     private StaffService staffService;
+
+    @Autowired
+    private StaffRoleService roleService;
 
     /**
      * 列表查询
@@ -65,6 +72,12 @@ public class StaffBiz {
             if (staff.getUpdateDate() != null) {
                 staffEntity.setUpdateDate(DateFormatUtils.format(staff.getUpdateDate(), DATE_TIME_FORMAT));
             }
+            String role = staff.getRole();
+            if (StringUtils.isNotBlank(role)) {
+                List<StaffRole> roleList = Arrays.stream(role.split(","))
+                        .map(roleId -> roleService.findById(Integer.valueOf(roleId))).collect(Collectors.toList());
+                staffEntity.setRoleList(roleList);
+            }
             return staffEntity;
         }).collect(Collectors.toList());
     }
@@ -99,8 +112,4 @@ public class StaffBiz {
     public int delete(Integer id, String updateBy) {
         return staffService.deleteById(id, updateBy);
     }
-
-
-
-
 }

@@ -19,6 +19,7 @@
         <result column="permanreside" jdbcType="VARCHAR" property="permanreside"/>
         <result column="address" jdbcType="VARCHAR" property="address"/>
         <result column="technical" jdbcType="VARCHAR" property="technical"/>
+        <result column="role" jdbcType="VARCHAR" property="role"/>
         <result column="status" jdbcType="TINYINT" property="status"/>
         <result column="deleted" jdbcType="TINYINT" property="deleted"/>
         <result column="createDate" jdbcType="TIMESTAMP" property="createDate"/>
@@ -28,8 +29,8 @@
     </resultMap>
     <sql id="Base_Column_List">
     id, userName, email, realName, idNumber, mobile, sex, birthDay, ntPlaceCode, ntPlaceName, 
-    birthPlaceCode, birthPlaceName, nation, marriage, permanreside, address, technical, status, deleted,
-    createDate, createBy, updateDate, updateBy
+    birthPlaceCode, birthPlaceName, nation, marriage, permanreside, address, technical, role,
+    status, deleted, createDate, createBy, updateDate, updateBy
   </sql>
 
     <select id="list" parameterType="com.plover.authorize.form.StaffQueryForm" resultMap="BaseResultMap">
@@ -133,6 +134,10 @@
             <if test="technical != null">
                 technical,
             </if>
+            <if test="role != null">
+                role,
+            </if>
+
             <if test="status != null">
                 status,
             </if>
@@ -198,6 +203,9 @@
             </if>
             <if test="technical != null">
                 #{technical,jdbcType=VARCHAR},
+            </if>
+            <if test="role != null">
+                #{role,jdbcType=VARCHAR},
             </if>
             <if test="status != null">
                 #{status,jdbcType=TINYINT},
@@ -265,6 +273,9 @@
             </if>
             <if test="technical != null">
                 technical = #{technical,jdbcType=VARCHAR},
+            </if>
+            <if test="role != null">
+                role = #{role,jdbcType=VARCHAR},
             </if>
             <if test="status != null">
                 status = #{status,jdbcType=TINYINT},

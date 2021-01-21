@@ -115,6 +115,11 @@ public class Staff extends BaseModel {
     private String technical;
 
     /**
+     * 角色id,逗号隔开
+     */
+    private String role;
+
+    /**
      * 状态
      * 0: 正常
      * 1: 禁用

@@ -1,7 +1,10 @@
 package com.plover.authorize.entity;
 
 import com.plover.authorize.common.BaseEntity;
+import com.plover.authorize.model.StaffRole;
 import lombok.Data;
+
+import java.util.List;
 
 /**
  * Project:user-center
@@ -92,6 +95,16 @@ public class StaffEntity extends BaseEntity {
      * 技术方向
      */
     private String technical;
+
+    /**
+     * 角色id, 逗号隔开
+     */
+    private String role;
+
+    /**
+     * role 信息
+     */
+    private List<StaffRole> roleList;
 
     /**
      * 状态
