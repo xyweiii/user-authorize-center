@@ -36,7 +36,6 @@ public class StaffRoleBiz {
         return convert(staffRoleList);
     }
 
-
     /**
      * staffRole 数据转换
      * staffRole -->  staffRoleEntity
