@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.plover.authorize.mapper.AppMapper">
-    <resultMap id="BaseResultMap" type="com.plover.authorize.model.App">
+<mapper namespace="com.plover.authorize.mapper.AppResourceMapper">
+    <resultMap id="BaseResultMap" type="com.plover.authorize.model.AppResource">
         <id column="id" jdbcType="INTEGER" property="id"/>
-        <result column="appName" jdbcType="VARCHAR" property="appName"/>
-        <result column="appUrl" jdbcType="VARCHAR" property="appUrl"/>
-        <result column="appId" jdbcType="VARCHAR" property="appId"/>
+        <result column="appId" jdbcType="INTEGER" property="appId"/>
+        <result column="resource" jdbcType="VARCHAR" property="resource"/>
         <result column="description" jdbcType="VARCHAR" property="description"/>
-        <result column="role" jdbcType="VARCHAR" property="role"/>
         <result column="deleted" jdbcType="INTEGER" property="deleted"/>
         <result column="createBy" jdbcType="VARCHAR" property="createBy"/>
         <result column="createDate" jdbcType="TIMESTAMP" property="createDate"/>
@@ -15,43 +13,71 @@
         <result column="updateDate" jdbcType="TIMESTAMP" property="updateDate"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, appName, appUrl, appId,  description, role, deleted, createBy, createDate, updateBy, updateDate
-    </sql>
+    id, appId, resource, description, deleted, createBy, createDate, updateBy,
+    updateDate
+  </sql>
 
-    <select id="list" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <select id="list" parameterType="com.plover.authorize.form.AppResourceQueryForm" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from app
-        where deleted=0 order by updateDate desc
+        from app_resource
+        where deleted = 0
+        <if test="appId != null ">
+            and appId = #{appId}
+        </if>
+        <if test="resource != null and resource!='' ">
+            and resource like concat('%',#{resource},'%')
+        </if>
+        <if test="description != null and description!='' ">
+            and description like concat('%',#{description},'%')
+        </if>
+        order by updateDate desc
+        limit #{start },#{limit}
+    </select>
+
+    <select id="count" parameterType="com.plover.authorize.form.AppResourceQueryForm" resultType="java.lang.Integer">
+        select count(1)
+        from app_resource
+        where deleted = 0
+        <if test="appId != null ">
+            and appId = #{appId}
+        </if>
+        <if test="resource != null and resource!='' ">
+            and resource like concat('%',#{resource},'%')
+        </if>
+        <if test="description != null and description!='' ">
+            and description like concat('%',#{description},'%')
+        </if>
     </select>
 
     <select id="findById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from app
+        from app_resource
         where id = #{id,jdbcType=INTEGER}
     </select>
 
-    <insert id="add" parameterType="com.plover.authorize.model.App">
-        insert into app
+    <select id="findByAppId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from app_resource
+        where appId = #{appId,jdbcType=INTEGER}
+    </select>
+
+    <insert id="add" parameterType="com.plover.authorize.model.AppResource">
+        insert into app_resource
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
             </if>
-            <if test="appName != null">
-                appName,
-            </if>
-            <if test="appUrl != null">
-                appUrl,
-            </if>
             <if test="appId != null">
                 appId,
             </if>
+            <if test="resource != null">
+                resource,
+            </if>
             <if test="description != null">
                 description,
-            </if>
-            <if test="role != null">
-                role,
             </if>
             <if test="deleted != null">
                 deleted,
@@ -62,26 +88,20 @@
             <if test="updateBy != null">
                 updateBy,
             </if>
-            createDate, updateDate
+            createDate,updateDate
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 #{id,jdbcType=INTEGER},
             </if>
-            <if test="appName != null">
-                #{appName,jdbcType=VARCHAR},
-            </if>
-            <if test="appUrl != null">
-                #{appUrl,jdbcType=VARCHAR},
-            </if>
             <if test="appId != null">
-                #{appId,jdbcType=VARCHAR},
+                #{appId,jdbcType=INTEGER},
+            </if>
+            <if test="resource != null">
+                #{resource,jdbcType=VARCHAR},
             </if>
             <if test="description != null">
                 #{description,jdbcType=VARCHAR},
-            </if>
-            <if test="role != null">
-                #{role,jdbcType=VARCHAR},
             </if>
             <if test="deleted != null">
                 #{deleted,jdbcType=INTEGER},
@@ -96,23 +116,17 @@
         </trim>
     </insert>
 
-    <update id="update" parameterType="com.plover.authorize.model.App">
-        update app
+    <update id="update" parameterType="com.plover.authorize.model.AppResource">
+        update app_resource
         <set>
-            <if test="appName != null">
-                appName = #{appName,jdbcType=VARCHAR},
-            </if>
-            <if test="appUrl != null">
-                appUrl = #{appUrl,jdbcType=VARCHAR},
-            </if>
             <if test="appId != null">
-                appId = #{appId,jdbcType=VARCHAR},
+                appId = #{appId,jdbcType=INTEGER},
+            </if>
+            <if test="resource != null">
+                resource = #{resource,jdbcType=VARCHAR},
             </if>
             <if test="description != null">
                 description = #{description,jdbcType=VARCHAR},
-            </if>
-            <if test="role != null">
-                role = #{role,jdbcType=VARCHAR},
             </if>
             <if test="deleted != null">
                 deleted = #{deleted,jdbcType=INTEGER},
@@ -125,10 +139,8 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
-
     <update id="deleteById">
-    update app set  deleted = 1,updateBy =  #{updateBy}
+    update  app_resource set deleted = 1 ,updateBy = #{updateBy}
     where id = #{id,jdbcType=INTEGER}
   </update>
-
 </mapper>

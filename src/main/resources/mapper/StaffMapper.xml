@@ -19,6 +19,7 @@
         <result column="permanreside" jdbcType="VARCHAR" property="permanreside"/>
         <result column="address" jdbcType="VARCHAR" property="address"/>
         <result column="technical" jdbcType="VARCHAR" property="technical"/>
+        <result column="psnCode" jdbcType="VARCHAR" property="psnCode"/>
         <result column="role" jdbcType="VARCHAR" property="role"/>
         <result column="status" jdbcType="TINYINT" property="status"/>
         <result column="deleted" jdbcType="TINYINT" property="deleted"/>
@@ -29,8 +30,8 @@
     </resultMap>
     <sql id="Base_Column_List">
     id, userName, email, realName, idNumber, mobile, sex, birthDay, ntPlaceCode, ntPlaceName, 
-    birthPlaceCode, birthPlaceName, nation, marriage, permanreside, address, technical, role,
-    status, deleted, createDate, createBy, updateDate, updateBy
+    birthPlaceCode, birthPlaceName, nation, marriage, permanreside, address, technical, psnCode,
+    role,status, deleted, createDate, createBy, updateDate, updateBy
   </sql>
 
     <select id="list" parameterType="com.plover.authorize.form.StaffQueryForm" resultMap="BaseResultMap">

@@ -1,7 +1,10 @@
 package com.plover.authorize.entity;
 
 import com.plover.authorize.common.BaseEntity;
+import com.plover.authorize.model.StaffRole;
 import lombok.Data;
+
+import java.util.List;
 
 /**
  * Project:user-center
@@ -29,9 +32,25 @@ public class AppEntity extends BaseEntity {
     private String appId;
 
     /**
+     * 描述
+     */
+    private String description;
+
+    /**
+     * app 授权哪些角色
+     * 角色id,逗号隔开
+     */
+    private String role;
+
+    /**
      * 删除
      * 0:未删除
      * 1:已删除
      */
     private int deleted;
+
+    /**
+     * 角色
+     */
+    private List<StaffRole> roleList;
 }

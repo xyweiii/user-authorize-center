@@ -97,6 +97,11 @@ public class StaffEntity extends BaseEntity {
     private String technical;
 
     /**
+     * 用户唯一编号
+     */
+    private String psnCode;
+
+    /**
      * 角色id, 逗号隔开
      */
     private String role;

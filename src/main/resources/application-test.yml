@@ -3,21 +3,26 @@ server:
 
 spring:
   application:
-    name: user-center
+    name: authorize-center
   servlet:
     multipart:
       max-file-size: 10MB
 
   datasource:
-    url: jdbc:mysql://localhost:3306/user_center?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false
+    url: jdbc:mysql://localhost:3306/authorize_center?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false
     username: root
-    password: pass
+    password: qianniaomysql
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.zaxxer.hikari.HikariDataSource
     hikari:
       maximum-pool-size: 10
       connection-timeout: 5000
       idle-timeout: 180000
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: authorize_center
 
   session:
     store-type: redis
@@ -32,7 +37,7 @@ logging:
   file.max-history: 2
   file.max-size: 100MB
   file:
-    path: /data/logs/user-center/
+    path: /data/logs/authorize-center/
   level:
     root: info
     com:

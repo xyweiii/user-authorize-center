@@ -1,6 +1,5 @@
 package com.plover.authorize.config;
 
-import com.plover.authorize.model.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -27,7 +26,8 @@ public class LoginInterceptor implements HandlerInterceptor {
             return false;
         }
         session.getAttributeNames().hasMoreElements();
-        User user = (User) session.getAttribute("user");
+        //User/Staff 两种类型
+        Object user = session.getAttribute("user");
         if (user == null) {
             log.info(" LoginInterceptor: userId is  null");
             return201(response);

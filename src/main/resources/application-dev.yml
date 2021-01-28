@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: user-center
+    name: authorize-center
   servlet:
     multipart:
       max-file-size: 10MB
@@ -18,6 +18,11 @@ spring:
       maximum-pool-size: 10
       connection-timeout: 5000
       idle-timeout: 180000
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: authorize_center
 
   session:
     store-type: redis

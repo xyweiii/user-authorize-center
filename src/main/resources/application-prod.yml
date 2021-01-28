@@ -9,7 +9,7 @@ spring:
       max-file-size: 10MB
 
   datasource:
-    url: jdbc:mysql://10.123.0.73:3306/user_center?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false
+    url: jdbc:mysql://10.123.0.73:3306/authorize_center?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false
     username: action
     password: DB123456!
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -18,6 +18,11 @@ spring:
       maximum-pool-size: 10
       connection-timeout: 5000
       idle-timeout: 180000
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: authorize_center
 
   session:
     store-type: redis

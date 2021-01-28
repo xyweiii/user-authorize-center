@@ -24,6 +24,7 @@ public class Staff extends BaseModel {
     @ExcelProperty(value = "userName")
     private String userName;
 
+
     /**
      * 邮箱
      */
@@ -113,6 +114,12 @@ public class Staff extends BaseModel {
      */
     @ExcelProperty(value = "technical")
     private String technical;
+
+    /**
+     * 用户唯一编号
+     */
+    @ExcelProperty(value = "psnCode")
+    private String psnCode;
 
     /**
      * 角色id,逗号隔开

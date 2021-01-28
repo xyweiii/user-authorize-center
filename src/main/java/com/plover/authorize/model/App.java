@@ -27,6 +27,17 @@ public class App extends BaseModel {
     private String appId;
 
     /**
+     * 描述
+     */
+    private String description;
+
+    /**
+     * app 授权哪些角色
+     * 角色id,逗号隔开
+     */
+    private String role;
+
+    /**
      * 删除
      * 0:未删除
      * 1:已删除

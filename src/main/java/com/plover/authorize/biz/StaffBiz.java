@@ -45,8 +45,8 @@ public class StaffBiz {
      */
     public PageList<StaffEntity> list(StaffQueryForm queryForm) {
         PageList<StaffEntity> page = new PageList<>();
-        List<Staff> userList = staffService.list(queryForm);
-        List<StaffEntity> entityList = convert(userList);
+        List<Staff> staffList = staffService.list(queryForm);
+        List<StaffEntity> entityList = convert(staffList);
         int totalCount = staffService.count(queryForm);
         page.setPageNum(queryForm.pageNum);
         page.setPageSize(queryForm.pageSize);
