@@ -76,7 +76,7 @@ public class LoginController {
                 resp.setMessage("身份校验失败");
             }
         } catch (Exception e) {
-            log.error("login occur error");
+            log.error("login occur error", e);
             resp.setCode(HttpBizCode.SYSERROR.getCode());
             resp.setMessage("业务异常,请稍后重试");
         }
