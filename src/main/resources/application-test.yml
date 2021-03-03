@@ -35,6 +35,13 @@ mybatis:
   mapper-locations: classpath:mapper/*.xml
 
 
+# app 上传文件位置: origin:原始位置  unzip:解压的位置
+app:
+  file:
+    origin: /home/xywei/authorize-center/file/app/origin/
+    unzip: /home/xywei/authorize-center/file/app/
+
+# sqlApi 数据源配置
 sqlApi:
   datasource:
     url: jdbc:mysql://localhost:3306/authorize_center?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false
