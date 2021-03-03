@@ -129,7 +129,7 @@ public class SqlApiController {
      * @param id
      * @return
      */
-    @PostMapping(value = "/query/{id}")
+    @GetMapping(value = "/query/{id}")
     public Response<Object> query(@PathVariable("id") Integer id) {
         Response<Object> resp = new Response<>();
         try {
