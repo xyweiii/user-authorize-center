@@ -27,6 +27,22 @@ public class App extends BaseModel {
     private String appId;
 
     /**
+     * 0: 业务系统
+     * 1: 轻应用
+     */
+    private int type;
+
+    /**
+     * 是否需要登陆
+     */
+    private int needLogin;
+
+    /**
+     * 是否需要鉴权
+     */
+    private int needAuthority;
+
+    /**
      * 描述
      */
     private String description;

@@ -52,4 +52,12 @@ public interface AppService {
      * @return
      */
     int delete(Integer id, String updateBy);
+
+    /**
+     * 泥融 新增 app
+     *
+     * @param app
+     * @return
+     */
+    int addByNiRong(App app);
 }

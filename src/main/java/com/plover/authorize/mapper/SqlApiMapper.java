@@ -1,24 +1,31 @@
 package com.plover.authorize.mapper;
 
-import com.plover.authorize.model.App;
+
+import com.plover.authorize.model.SqlApi;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-
 @Repository
 @Mapper
-public interface AppMapper {
-
+public interface SqlApiMapper {
 
     /**
-     * 获取所有应用
+     * 列表查询
      *
      * @return
      */
-    List<App> list();
+    List<SqlApi> list();
+
+
+    /**
+     * 查询最新 一条记录
+     *
+     * @return
+     */
+    SqlApi findNewOne();
 
     /**
      * 根据id查询
@@ -26,38 +33,29 @@ public interface AppMapper {
      * @param id
      * @return
      */
-    App findById(Integer id);
+    SqlApi findById(@Param("id") Integer id);
 
     /**
      * 新增
      *
-     * @param app
+     * @param sql2Api
      * @return
      */
-    int add(App app);
+    int add(SqlApi sql2Api);
 
     /**
      * 更新
      *
-     * @param app
+     * @param sql2Api
      * @return
      */
-    int update(App app);
+    int update(SqlApi sql2Api);
 
     /**
      * 删除
      *
      * @param id
-     * @param updateBy 更新人
      * @return
      */
-    int deleteById(@Param("id") Integer id, @Param("updateBy") String updateBy);
-
-    /**
-     * 泥融新增app
-     *
-     * @param app
-     * @return
-     */
-    int addByNiRong(App app);
+    int deleteById(@Param("id") Integer id);
 }

@@ -6,7 +6,8 @@ spring:
     name: authorize-center
   servlet:
     multipart:
-      max-file-size: 10MB
+      max-file-size: 100MB
+      max-request-size: 100MB
 
   datasource:
     url: jdbc:mysql://localhost:3306/authorize_center?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false
@@ -32,6 +33,22 @@ spring:
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
+
+# app 上传文件位置: origin:原始位置  unzip:解压的位置
+app:
+  file:
+    origin: /Users/xywei/file/app/origin/
+    unzip: /Users/xywei/file/app/
+
+# sqlApi 数据源配置
+sqlApi:
+  datasource:
+    url: jdbc:mysql://localhost:3306/authorize_center?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false
+    username: root
+    password: pass
+  query:
+    host: localhost
+    port: 8001
 
 logging:
   file.max-history: 2

@@ -11,8 +11,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -31,6 +35,18 @@ import java.util.stream.Collectors;
 public class AppBiz {
 
     private static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+
+    /**
+     * app 原始文件存储位置
+     */
+    @Value("${app.file.origin}")
+    private String originFilePath;
+
+    /**
+     * app 解压文件存储位置
+     */
+    @Value("${app.file.unzip}")
+    private String unzipFilePath;
 
     @Autowired
     private AppService appService;
@@ -152,5 +168,79 @@ public class AppBiz {
             return 0;
         }
         return appService.delete(id, updateBy);
+    }
+
+    /**
+     * 上传 轻应用文件
+     *
+     * @param file
+     * @param id   应用id
+     */
+    public void uploadFile(MultipartFile file, Integer id) throws IOException, InterruptedException {
+        App app = appService.findById(id);
+        if (app == null) {
+            return;
+        }
+        String originalFilename = file.getOriginalFilename();
+        File originPathFile = new File(originFilePath);
+        if (!originPathFile.exists()) {
+            originPathFile.mkdirs();
+        }
+        //重复文件删除
+        File existFile = new File(originFilePath + originalFilename);
+        if (existFile.exists()) {
+            existFile.delete();
+        }
+        existFile.createNewFile();
+        FileOutputStream outputStream = new FileOutputStream(existFile);
+        //上传app 文件至 指定目录
+        FileCopyUtils.copy(file.getInputStream(), outputStream);
+        //unzip -O CP936 -o test.zip -d /tmp/
+        Thread.sleep(3000);
+        //
+        String command = " unzip -o " + originFilePath + originalFilename + " -d " + unzipFilePath + id;
+        System.out.println(command);
+        Process process = Runtime.getRuntime().exec(command);
+
+        printMessage(process.getInputStream());
+        printMessage(process.getErrorStream());
+        int value = process.waitFor();
+        log.info("command exec result:{}", value);
+    }
+
+
+    private static void printMessage(final InputStream input) {
+        new Thread(() -> {
+            Reader reader = new InputStreamReader(input);
+            BufferedReader bf = new BufferedReader(reader);
+            String line = null;
+            try {
+                while ((line = bf.readLine()) != null) {
+                    System.out.println(line);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+
+    /**
+     * 泥融 新增 app应用
+     *
+     * @param app
+     * @return
+     */
+    public App addByNiRong(App app) {
+        String uuid = UUID.randomUUID().toString().replace("-", "");
+        app.setAppId(uuid);
+        app.setCreateBy("NiRong");
+        app.setUpdateBy("NiRong");
+        app.setType(1);
+        int id = appService.addByNiRong(app);
+        System.out.println(id);
+        if (id > 0) {
+            return appService.findById(id);
+        }
+        return null;
     }
 }

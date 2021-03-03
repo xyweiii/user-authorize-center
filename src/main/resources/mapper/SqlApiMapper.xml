@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.plover.authorize.mapper.SqlApiMapper">
+    <resultMap id="BaseResultMap" type="com.plover.authorize.model.SqlApi">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="sqlStr" jdbcType="LONGVARCHAR" property="sqlStr"/>
+        <result column="apiUrl" jdbcType="VARCHAR" property="apiUrl"/>
+        <result column="createBy" jdbcType="VARCHAR" property="createBy"/>
+        <result column="updateBy" jdbcType="VARCHAR" property="updateBy"/>
+        <result column="createDate" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="updateDate" jdbcType="TIMESTAMP" property="updateDate"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    id, title,sqlStr, apiUrl, createDate, updateDate,createBy,updateBy
+    </sql>
+
+    <select id="list" resultType="com.plover.authorize.model.SqlApi">
+        select
+        <include refid="Base_Column_List"/>
+        from sql_api
+        order by updateDate desc
+    </select>
+
+    <select id="findNewOne" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sql_api
+        order by id desc limit 1
+    </select>
+
+    <select id="findById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sql_api
+        where id = #{id}
+    </select>
+
+    <insert id="add" parameterType="com.plover.authorize.model.SqlApi">
+        insert into sql_api
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="sqlStr != null">
+                sqlStr,
+            </if>
+            <if test="apiUrl != null">
+                apiUrl,
+            </if>
+            <if test="createBy != null">
+                createBy,
+            </if>
+            <if test="updateBy != null">
+                updateBy,
+            </if>
+            createDate,updateDate
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="sqlStr != null">
+                #{sqlStr,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="apiUrl != null">
+                #{apiUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            NOW(),NOW()
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.plover.authorize.model.SqlApi">
+        update sql_api
+        <set>
+            <if test="title != null">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="apiUrl != null">
+                apiUrl = #{apiUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="sqlStr != null">
+                sqlStr = #{sqlStr,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="updateBy != null">
+                updateBy = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            updateDate = NOW()
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <delete id="deleteById" parameterType="java.lang.Integer">
+    delete from sql_api
+    where id = #{id,jdbcType=INTEGER}
+    </delete>
+</mapper>

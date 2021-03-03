@@ -10,6 +10,7 @@ import com.plover.authorize.model.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -161,6 +162,51 @@ public class AppController {
             }
         } catch (Exception e) {
             log.error("app delete occur error", e);
+            resp.setCode(HttpBizCode.SYSERROR.getCode());
+            resp.setMessage(e.getMessage());
+        }
+        return resp;
+    }
+
+
+    /**
+     * 上传 轻应用文件
+     *
+     * @param file 文件
+     * @param id   应用主键 id
+     */
+    @PostMapping(value = "/uploadFile")
+    public Response<Boolean> importExcel(MultipartFile file, Integer id) {
+        Response<Boolean> resp = new Response<>();
+        try {
+            appBiz.uploadFile(file, id);
+        } catch (Exception e) {
+            log.error("app uploadFile occur error", e);
+            resp.setCode(HttpBizCode.SYSERROR.getCode());
+            resp.setMessage(e.getMessage());
+        }
+        return resp;
+    }
+
+    /**
+     * 泥融 通过接口 添加app
+     *
+     * @param app
+     * @return
+     */
+    @PostMapping(value = "/addByNiRong")
+    public Response<App> addByNiRong(@RequestBody App app) {
+        Response<App> resp = new Response<>();
+        try {
+            App result = appBiz.addByNiRong(app);
+            if (result == null) {
+                resp.setCode(HttpBizCode.BIZERROR.getCode());
+                resp.setMessage("新增失败");
+            } else {
+                resp.setData(app);
+            }
+        } catch (Exception e) {
+            log.error("app addByNiRong occur error", e);
             resp.setCode(HttpBizCode.SYSERROR.getCode());
             resp.setMessage(e.getMessage());
         }

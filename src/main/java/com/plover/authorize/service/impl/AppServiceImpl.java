@@ -81,4 +81,16 @@ public class AppServiceImpl implements AppService {
         }
         return appMapper.deleteById(id, updateBy);
     }
+
+    /**
+     * 泥融 新增 app
+     *
+     * @param app
+     * @return
+     */
+    @Override
+    public int addByNiRong(App app) {
+        appMapper.addByNiRong(app);
+        return app.getId();
+    }
 }

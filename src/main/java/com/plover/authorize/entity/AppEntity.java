@@ -32,6 +32,26 @@ public class AppEntity extends BaseEntity {
     private String appId;
 
     /**
+     * 0: 业务系统
+     * 1: 轻应用
+     */
+    private int type;
+
+    /**
+     * 是否需要登陆
+     * 0: 不需要
+     * 1：需要
+     */
+    private int needLogin;
+
+    /**
+     * 是否需要鉴权
+     * 0： 不需要
+     * 1：需要
+     */
+    private int needAuthority;
+
+    /**
      * 描述
      */
     private String description;

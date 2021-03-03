@@ -6,6 +6,9 @@
         <result column="appName" jdbcType="VARCHAR" property="appName"/>
         <result column="appUrl" jdbcType="VARCHAR" property="appUrl"/>
         <result column="appId" jdbcType="VARCHAR" property="appId"/>
+        <result column="type" jdbcType="TINYINT" property="type"/>
+        <result column="needLogin" jdbcType="TINYINT" property="needLogin"/>
+        <result column="needAuthority" jdbcType="TINYINT" property="needAuthority"/>
         <result column="description" jdbcType="VARCHAR" property="description"/>
         <result column="role" jdbcType="VARCHAR" property="role"/>
         <result column="deleted" jdbcType="INTEGER" property="deleted"/>
@@ -15,7 +18,7 @@
         <result column="updateDate" jdbcType="TIMESTAMP" property="updateDate"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, appName, appUrl, appId,  description, role, deleted, createBy, createDate, updateBy, updateDate
+    id, appName, appUrl, appId, type, needLogin, needAuthority, description, role, deleted, createBy, createDate, updateBy, updateDate
     </sql>
 
     <select id="list" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -47,6 +50,15 @@
             <if test="appId != null">
                 appId,
             </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="needLogin != null">
+                needLogin,
+            </if>
+            <if test="needAuthority != null">
+                needAuthority,
+            </if>
             <if test="description != null">
                 description,
             </if>
@@ -76,6 +88,15 @@
             </if>
             <if test="appId != null">
                 #{appId,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                #{type},
+            </if>
+            <if test="needLogin != null">
+                #{needLogin},
+            </if>
+            <if test="needAuthority != null">
+                #{needAuthority},
             </if>
             <if test="description != null">
                 #{description,jdbcType=VARCHAR},
@@ -108,6 +129,15 @@
             <if test="appId != null">
                 appId = #{appId,jdbcType=VARCHAR},
             </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="needLogin != null">
+                needLogin = #{needLogin},
+            </if>
+            <if test="needAuthority != null">
+                needAuthority = #{needAuthority},
+            </if>
             <if test="description != null">
                 description = #{description,jdbcType=VARCHAR},
             </if>
@@ -130,5 +160,89 @@
     update app set  deleted = 1,updateBy =  #{updateBy}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+
+    <insert id="addByNiRong" useGeneratedKeys="true" keyProperty="id" parameterType="com.plover.authorize.model.App">
+        insert into app
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="appName != null">
+                appName,
+            </if>
+            <if test="appUrl != null">
+                appUrl,
+            </if>
+            <if test="appId != null">
+                appId,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="needLogin != null">
+                needLogin,
+            </if>
+            <if test="needAuthority != null">
+                needAuthority,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="role != null">
+                role,
+            </if>
+            <if test="deleted != null">
+                deleted,
+            </if>
+            <if test="createBy != null">
+                createBy,
+            </if>
+            <if test="updateBy != null">
+                updateBy,
+            </if>
+            createDate, updateDate
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="appName != null">
+                #{appName,jdbcType=VARCHAR},
+            </if>
+            <if test="appUrl != null">
+                #{appUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="appId != null">
+                #{appId,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                #{type},
+            </if>
+            <if test="needLogin != null">
+                #{needLogin},
+            </if>
+            <if test="needAuthority != null">
+                #{needAuthority},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="role != null">
+                #{role,jdbcType=VARCHAR},
+            </if>
+            <if test="deleted != null">
+                #{deleted,jdbcType=INTEGER},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            NOW(),NOW()
+        </trim>
+    </insert>
+
 
 </mapper>
