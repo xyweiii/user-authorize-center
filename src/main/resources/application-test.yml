@@ -1,5 +1,5 @@
 server:
-  port: 8001
+  port: 18000
 
 spring:
   application:
@@ -33,6 +33,17 @@ spring:
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
+
+
+sqlApi:
+  datasource:
+    url: jdbc:mysql://localhost:3306/authorize_center?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false
+    username: root
+    password: qianniaomysql
+  query:
+    host: 10.18.0.10
+    port: 18000
+
 
 logging:
   file.max-history: 2
