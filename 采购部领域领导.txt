@@ -1,0 +1,14 @@
+--  采购部领域管理员     根据  领域，订单状态，进行分组统计查询
+
+
+SELECT c_region as regin , c_currentstatus as status ,count(1) AS sum FROM po_praybill_b_copy1 
+GROUP BY  c_region,c_currentstatus;
+
+
+
+
+--  采购部领域管理员     根据  领域， 采购员,订单状态，进行分组统计查询
+SELECT c_region as regin , c_currentstatus as status ,  u.USER_NAME as userName, count(1) AS sum 
+FROM po_praybill_b_copy1  ppb left JOIN  sm_user  u ON  ppb.p_purchaser = u.CUSERID
+ 
+GROUP BY  c_region,c_currentstatus,u.CUSERID,u.USER_NAME

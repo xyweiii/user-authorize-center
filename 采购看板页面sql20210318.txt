@@ -1,0 +1,135 @@
+# 1.厂家合同供应商分组 价格排序
+SELECT
+	cus.custname AS "厂商名字",
+	sum( IFNULL( price.costprice, IFNULL( price.planprice, 0 ) ) * bill.npraynum ) AS amount,
+	sum(bill.npraynum) AS orderQuantity,
+	count(bill.CPRAYBILL_BID) AS orderNum
+FROM
+	po_praybill_b_copy1 bill
+	LEFT JOIN bd_cubasdoc cus ON cus.pk_cubasdoc = bill.cvendorbaseid
+	LEFT JOIN bd_invmandoc_copy1 price ON price.pk_invbasdoc = bill.cbaseid 
+WHERE
+	cus.custname IS NOT NULL 
+GROUP BY
+	bill.cvendorbaseid
+ORDER BY
+	amount DESC
+	LIMIT 20;
+	
+# 2.厂家合同供应商分组 订单数量排序
+SELECT
+	cus.custname AS "厂商名字",
+	sum( IFNULL( price.costprice, IFNULL( price.planprice, 0 ) ) * bill.npraynum ) AS amount,
+	sum(bill.npraynum) AS orderQuantity,
+	count(bill.CPRAYBILL_BID) AS orderNum
+FROM
+	po_praybill_b_copy1 bill
+	LEFT JOIN bd_cubasdoc cus ON cus.pk_cubasdoc = bill.cvendorbaseid
+	LEFT JOIN bd_invmandoc_copy1 price ON price.pk_invbasdoc = bill.cbaseid 
+WHERE
+	cus.custname IS NOT NULL 
+GROUP BY
+	bill.cvendorbaseid
+ORDER BY
+	orderQuantity DESC
+	LIMIT 20;
+
+# 3.厂家合同供应商分组 订单频次排序
+SELECT
+	cus.custname AS "厂商名字",
+	sum( IFNULL( price.costprice, IFNULL( price.planprice, 0 ) ) * bill.npraynum ) AS amount,
+	sum(bill.npraynum) AS orderQuantity,
+	count(bill.CPRAYBILL_BID) AS orderNum
+FROM
+	po_praybill_b_copy1 bill
+	LEFT JOIN bd_cubasdoc cus ON cus.pk_cubasdoc = bill.cvendorbaseid
+	LEFT JOIN bd_invmandoc_copy1 price ON price.pk_invbasdoc = bill.cbaseid 
+WHERE
+	cus.custname IS NOT NULL 
+GROUP BY
+	bill.cvendorbaseid
+ORDER BY
+	orderNum DESC
+	LIMIT 20;
+	
+	
+# 4.元器件规格分组 价格排序
+SELECT
+	shht_nworkorder_copy1.c_prodmodelcode,
+	sum( IFNULL( price.costprice, IFNULL( price.planprice, 0 ) ) * bill.npraynum ) AS amount,
+	sum(bill.npraynum) AS orderQuantity
+FROM
+	po_praybill_b_copy1 bill
+	LEFT JOIN shht_nworkorder_copy1 ON bill.p_working_key = shht_nworkorder_copy1.workorder 
+	LEFT JOIN bd_invmandoc_copy1 price ON price.pk_invbasdoc = bill.cbaseid 
+WHERE
+	shht_nworkorder_copy1.c_prodmodelcode IS NOT NULL 
+GROUP BY
+	shht_nworkorder_copy1.c_prodmodelcode
+ORDER BY
+	amount DESC
+	LIMIT 20;
+	
+# 5.元器件规格分组 频次排序
+SELECT
+	shht_nworkorder_copy1.c_prodmodelcode,
+	sum( IFNULL( price.costprice, IFNULL( price.planprice, 0 ) ) * bill.npraynum ) AS amount,
+	sum(bill.npraynum) AS orderQuantity
+FROM
+	po_praybill_b_copy1 bill
+	LEFT JOIN shht_nworkorder_copy1 ON bill.p_working_key = shht_nworkorder_copy1.workorder 
+	LEFT JOIN bd_invmandoc_copy1 price ON price.pk_invbasdoc = bill.cbaseid 
+WHERE
+	shht_nworkorder_copy1.c_prodmodelcode IS NOT NULL 
+GROUP BY
+	shht_nworkorder_copy1.c_prodmodelcode
+ORDER BY
+	orderQuantity DESC
+	LIMIT 20;
+
+
+# 6.查询厂家未到货TOP10
+SELECT
+	cus.custname AS "厂商名字",
+	count( bill.CPRAYBILL_BID ) count 
+FROM
+	po_praybill_b_copy1 bill
+	LEFT JOIN bd_cubasdoc cus ON cus.pk_cubasdoc = bill.cvendorbaseid 
+WHERE
+	( bill.npraynum IS NULL OR bill.npraynum < bill.c_total_arrive_order_num ) 
+	AND cus.custname IS NOT NULL 
+GROUP BY
+	bill.cvendorbaseid 
+ORDER BY
+	count DESC LIMIT 10;
+	
+# 7.器件逾期时间top10
+SELECT
+	shht_nworkorder_copy1.c_prodmodelcode AS "型号",
+	DATEDIFF(
+		NOW( ),
+		IFNULL(
+			bill.vdef15,
+			IFNULL( bill.dsuggestdate, DATE_ADD( STR_TO_DATE( LEFT ( bill.p_receive_time, 10 ), '%Y-%m-%d' ), INTERVAL 70 DAY ) ) 
+		) 
+	) AS overdueDays,
+	count( bill.CPRAYBILL_BID ) count 
+FROM
+	po_praybill_b_copy1 bill
+	LEFT JOIN shht_nworkorder_copy1 ON bill.p_working_key = shht_nworkorder_copy1.workorder 
+WHERE
+	shht_nworkorder_copy1.c_prodmodelcode IS NOT NULL 
+	AND IFNULL( bill.npraynum, 0 ) < bill.c_total_arrive_order_num 
+	AND (
+		bill.vdef15 IS NOT NULL 
+		AND bill.vdef15 < DATE_FORMAT( NOW( ), '%Y-%m-%d' ) 
+		OR ( bill.vdef15 IS NULL AND bill.dsuggestdate IS NOT NULL AND bill.dsuggestdate < DATE_FORMAT( NOW( ), '%Y-%m-%d' ) ) 
+		OR ( DATE_ADD( STR_TO_DATE( LEFT ( bill.p_receive_time, 10 ), '%Y-%m-%d' ), INTERVAL 70 DAY ) < NOW( ) ) 
+	) 
+GROUP BY
+	shht_nworkorder_copy1.c_prodmodelcode 
+ORDER BY
+	overdueDays DESC 
+	LIMIT 10;
+
+	

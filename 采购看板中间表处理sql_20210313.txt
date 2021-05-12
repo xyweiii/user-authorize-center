@@ -1,0 +1,320 @@
+
+一次性执行
+alter table po_praybill_b_copy1 
+	add column `p_pray_bill_num` varchar(30) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '请购单号',
+	add column `p_DPRAYDATE` char(10) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '请购日期',
+	add column `p_receive_time` timestamp NULL DEFAULT NULL COMMENT '接收时间',
+	add column `p_working_key` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL comment '工作令',
+	add column `p_purchaser` char(20) COLLATE utf8mb4_bin DEFAULT NULL comment '采购员',
+	add column `p_order_time` char(19) COLLATE utf8mb4_bin DEFAULT NULL comment '制单时间',
+	add column `c_region` tinyint(4) DEFAULT NULL COMMENT `领域(计算值) 1.运载 2.战术武器 3.卫星 4.空间科学 5.其他`,
+	add column `c_total_purchase_order_num` decimal(20,8) DEFAULT NULL COMMENT '采购单总数量',
+	add column `c_total_arrive_order_num` decimal(20,8) DEFAULT NULL COMMENT '到货单总数量',
+	add column `c_currentstatus` tinyint(4) DEFAULT NULL COMMENT `当前状态 1.订单未接收 2.未执行采购3.采购过程中4.临近到货5.部分到货6.逾期未到货`,
+	add column `c_month` tinyint(4) DEFAULT NULL COMMENT `月份`;
+
+alter table po_order_b_copy1 
+	add column`p_order_code` varchar(30) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '订单编号',
+	add column`p_order_time` char(10) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '订单日期',
+	add column`p_supplier_pid` char(20) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '采购订单供应商主键',
+	add column`p_working_key` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '工作令',
+	add column`p_purchaser` char(20) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '采购员';
+
+	
+ 
+
+
+
+truncate table po_praybill_b_copy1;
+insert into po_praybill_b_copy1 (CASSISTUNIT,CBASEID,CEMPLOYEEID,CMANGID,CPRAYBILL_BID,CPRAYBILLID,CPRODUCTBASID,CPRODUCTMANID,
+CPROJECTID,CPROJECTPHASEID,CPURORGANIZATION,CROWNO,CSOURCEBILLID,CSOURCEBILLROWID,CSOURCEBILLTYPE,CUPSOURCEBILLID,CUPSOURCEBILLROWID,
+CUPSOURCEBILLTYPE,CVENDORBASEID,CVENDORMANGID,CWAREHOUSEID,DDEMANDDATE,DR,DSUGGESTDATE,NACCUMULATENUM,NASSISTNUM,NPRAYNUM,NPRICEAUDITBILL,
+NQUOTEBILL,NSUGGESTPRICE,PK_CORP,PK_DEFDOC1,PK_DEFDOC10,PK_DEFDOC11,PK_DEFDOC12,PK_DEFDOC13,PK_DEFDOC14,PK_DEFDOC15,PK_DEFDOC16,PK_DEFDOC17,
+PK_DEFDOC18,PK_DEFDOC19,PK_DEFDOC2,PK_DEFDOC20,PK_DEFDOC3,PK_DEFDOC4,PK_DEFDOC5,PK_DEFDOC6,PK_DEFDOC7,PK_DEFDOC8,PK_DEFDOC9,PK_PURCORP,
+PK_REQCORP,PK_REQSTOORG,TS,VDEF1,VDEF10,VDEF11,VDEF12,VDEF13,VDEF14,VDEF15,VDEF16,VDEF17,VDEF18,VDEF19,VDEF2,VDEF20,VDEF3,VDEF4,VDEF5,VDEF6,
+VDEF7,VDEF8,VDEF9,VFREE1,VFREE2,VFREE3,VFREE4,VFREE5,VMEMO,VPRODUCENUM,NMONEY,NPRAYNUM0,CBIZTYPE,NGENCT) select * from po_praybill_b;
+
+
+
+truncate table po_order_b_copy1;
+insert into  po_order_b_copy1 (BLARGESS,BRECEIVEPLAN,CASSISTUNIT,CBASEID,CCLOSEUSERID,CCONTRACTID,CCONTRACTROWID,CCORRECTROWID,CCURRENCYTYPEID,CDEVADDRID,
+CDEVAREAID,CMANGID,COPERATOR,CORDER_BID,CORDERID,CPRICEAUDIT_BB1ID,CPRICEAUDIT_BID,CPRICEAUDITID,CPROJECTID,CPROJECTPHASEID,CQPBASESCHEMEID,CROWNO,CSOURCEBILLID,CSOURCEBILLTYPE,CSOURCEROWID,
+CUPSOURCEBILLID,CUPSOURCEBILLROWID,CUPSOURCEBILLTYPE,CUSEDEPTID,CVENDDEVADDRID,CVENDDEVAREAID,CWAREHOUSEID,DCLOSEDATE,DCONFIRMDATE,DCORRECTDATE,DPLANARRVDATE,DR,FORDERROWSTATUS,IDISCOUNTTAXTYPE,
+IISACTIVE,IISREPLENISH,NACCUMARRVNUM,NACCUMDAYPLNUM,NACCUMDEVNUM,NACCUMINVOICENUM,NACCUMRPNUM,NACCUMSTORENUM,NACCUMWASTNUM,NASSISTCURMNY,NASSISTNUM,NASSISTTAXMNY,NASSISTTAXPRICEMNY,NBACKARRVNUM,
+NBACKSTORENUM,NCONFIRMNUM,NDISCOUNTRATE,NEXCHANGEOTOARATE,NEXCHANGEOTOBRATE,NMONEY,NORDERNUM,NORGNETTAXPRICE,NORGTAXPRICE,NORIGINALCURMNY,NORIGINALCURPRICE,NORIGINALNETPRICE,NORIGINALTAXMNY,
+NORIGINALTAXPRICEMNY,NTAXMNY,NTAXPRICEMNY,NTAXRATE,PK_ARRVCORP,PK_ARRVSTOORG,PK_CORP,PK_CREQWAREID,PK_DEFDOC1,PK_DEFDOC10,PK_DEFDOC11,PK_DEFDOC12,PK_DEFDOC13,PK_DEFDOC14,PK_DEFDOC15,PK_DEFDOC16,
+PK_DEFDOC17,PK_DEFDOC18,PK_DEFDOC19,PK_DEFDOC2,PK_DEFDOC20,PK_DEFDOC3,PK_DEFDOC4,PK_DEFDOC5,PK_DEFDOC6,PK_DEFDOC7,PK_DEFDOC8,PK_DEFDOC9,PK_INVOICECORP,PK_REQCORP,PK_REQSTOORG,PK_UPSRCCORP,
+TS,VDEF1,VDEF10,VDEF11,VDEF12,VDEF13,VDEF14,VDEF15,VDEF16,VDEF17,VDEF18,VDEF19,VDEF2,VDEF20,VDEF3,VDEF4,VDEF5,VDEF6,VDEF7,VDEF8,VDEF9,VFREE1,VFREE2,VFREE3,VFREE4,VFREE5,VMEMO,VPRICEAUDITCODE,
+VPRODUCENUM,VRECEIVEADDRESS,VVENDDEVADDR,VVENDINVENTORYCODE,VVENDINVENTORYNAME,VVENDORORDERCODE,VVENDORORDERROW,BTRANSCLOSED,NFEEMNY) select * from  po_order_b;
+
+
+
+SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_NAME='po_order' AND TABLE_SCHEMA='nc560418'
+
+
+
+
+
+
+
+update po_praybill_b_copy1, po_praybill
+set 
+	po_praybill_b_copy1.p_pray_bill_num = po_praybill.VPRAYCODE,
+	po_praybill_b_copy1.p_DPRAYDATE = po_praybill.DPRAYDATE,
+	po_praybill_b_copy1.p_receive_time = po_praybill.vdef5,
+	po_praybill_b_copy1.p_working_key = po_praybill.VDEF2,
+	po_praybill_b_copy1.p_purchaser = po_praybill.COPERATOR,
+	po_praybill_b_copy1.p_order_time = po_praybill.TMAKETIME
+where po_praybill_b_copy1.CPRAYBILLID = po_praybill.CPRAYBILLID;
+
+
+
+
+update po_order_b_copy1,po_order
+set
+	po_order_b_copy1.p_order_code = po_order.VORDERCODE,
+	po_order_b_copy1.p_order_time = po_order.DORDERDATE,
+	po_order_b_copy1.p_supplier_pid = po_order.cvendorbaseid,
+	po_order_b_copy1.p_working_key = po_order.vdef2,
+	po_order_b_copy1.p_purchaser = po_order.coperator
+where po_order_b_copy1.CORDERID = po_order.CORDERID;
+
+
+
+
+
+
+#领域
+update po_praybill_b_copy1 ,shht_nworkorder set c_region = case 
+when (ARMYTYPE like '%运载%') then 1
+when (ARMYTYPE like '%武器%' or ARMYTYPE like '%战术%') then 2
+when (ARMYTYPE like '%卫星%') then 3
+when (ARMYTYPE like '%飞船%') then  4
+else 5 end
+where po_praybill_b_copy1.p_working_key = shht_nworkorder.WORKORDER and  po_praybill_b_copy1.p_working_key is not null 
+;
+
+
+# 统计采购单数量插入请购单子表中
+UPDATE po_praybill_b_copy1 bill 
+SET bill.c_total_purchase_order_num = ( SELECT SUM( NORDERNUM ) FROM po_order_b_copy1 orders WHERE orders.cupsourcebillrowid = bill.CPRAYBILL_BID );
+;
+
+update po_praybill_b_copy1  set po_praybill_b_copy1.c_total_arrive_order_num = (
+select count from 
+(select  po_praybill_b_copy1.CPRAYBILL_BID, sum(narrvnum) count
+from  po_praybill_b_copy1 left join po_order_b_copy1 on po_praybill_b_copy1.CPRAYBILL_BID = po_order_b_copy1.cupsourcebillrowid
+ left join  po_arriveorder_b on po_arriveorder_b.csourcebillrowid = po_order_b_copy1.CORDER_BID group by  po_praybill_b_copy1.CPRAYBILL_BID) t where t.CPRAYBILL_BID = po_praybill_b_copy1.CPRAYBILL_BID)
+ ;
+
+
+update po_praybill_b_copy1 set c_month =  date_format(STR_TO_DATE(p_DPRAYDATE, '%Y-%m-%d' ), '%Y%m');
+
+
+
+
+//未接收 1665（1）
+UPDATE po_praybill_b_copy1 
+SET c_currentstatus = 1 
+WHERE
+	CPRAYBILL_BID IN (
+	SELECT
+		CPRAYBILL_BID 
+	FROM
+		(
+		SELECT
+			pb.CPRAYBILL_BID 
+		FROM
+			po_praybill_b_copy1 pb
+			LEFT JOIN shht_stock_b sb ON pb.csourcebillrowid = sb.pk_stock_b 
+		WHERE
+			pb.p_receive_time IS NULL 
+			AND sb.dr = 0 
+			AND pb.dr = 0 
+		) t 
+	);
+	
+//过程中 12771 （3）
+
+UPDATE po_praybill_b_copy1 
+SET c_currentstatus = 3 
+WHERE
+	CPRAYBILL_BID IN (
+	SELECT
+		CPRAYBILL_BID 
+	FROM
+		(
+		SELECT
+			pb.CPRAYBILL_BID 
+		FROM
+			po_praybill_b_copy1 pb
+			LEFT JOIN po_order_b_copy1 pob ON pob.cupsourcebillrowid = pb.cpraybill_bid 
+			AND pob.dr = 0 
+		WHERE
+			pb.p_receive_time IS NOT NULL 
+			AND pob.cupsourcebillrowid IS NULL 
+			AND pb.dr = 0 
+		) t 
+	);
+	
+//临近到货 948 （4）
+UPDATE po_praybill_b_copy1 
+SET c_currentstatus = 4 
+WHERE
+	CPRAYBILL_BID IN (
+	SELECT
+		CPRAYBILL_BID 
+	FROM
+		(
+		SELECT
+			pb.CPRAYBILL_BID 
+		FROM
+			po_praybill_b_copy1 pb
+			LEFT JOIN po_order_b_copy1 pob ON pob.cupsourcebillrowid = pb.cpraybill_bid 
+			AND pob.dr = 0
+			LEFT JOIN bd_invbasdoc bd ON bd.pk_invbasdoc = pb.cbaseid 
+		WHERE
+			pb.dr = 0 
+			AND pb.p_receive_time IS NOT NULL 
+			AND pob.cupsourcebillrowid IS NULL 
+			AND pb.vdef15 IS NOT NULL 
+			AND pb.vdef15 >= DATE_FORMAT( NOW( ), '%Y-%m-%d' ) 
+			AND pb.vdef15 <= DATE_FORMAT( DATE_ADD( NOW( ), INTERVAL 1 MONTH ), '%Y-%m-%d' ) UNION
+		SELECT
+			pb.CPRAYBILL_BID 
+		FROM
+			po_praybill_b_copy1 pb
+			LEFT JOIN po_order_b_copy1 pob ON pob.cupsourcebillrowid = pb.cpraybill_bid 
+			AND pob.dr = 0
+			LEFT JOIN bd_invbasdoc bd ON bd.pk_invbasdoc = pb.cbaseid 
+		WHERE
+			pb.dr = 0 
+			AND pb.p_receive_time IS NOT NULL 
+			AND pob.cupsourcebillrowid IS NULL 
+			AND pb.vdef15 IS NULL 
+			AND pb.dsuggestdate IS NOT NULL 
+			AND pb.vdef15 >= DATE_FORMAT( NOW( ), '%Y-%m-%d' ) 
+			AND pb.vdef15 <= DATE_FORMAT( DATE_ADD( NOW( ), INTERVAL 1 MONTH ), '%Y-%m-%d' ) 
+			AND pb.dsuggestdate IS NOT NULL 
+			AND pb.dsuggestdate >= DATE_FORMAT( NOW( ), '%Y-%m-%d' ) 
+			AND pb.dsuggestdate <= DATE_FORMAT( DATE_ADD( NOW( ), INTERVAL 1 MONTH ), '%Y-%m-%d' ) UNION
+		SELECT
+			pb.CPRAYBILL_BID 
+		FROM
+			po_praybill_b_copy1 pb
+			LEFT JOIN po_order_b_copy1 pob ON pob.cupsourcebillrowid = pb.cpraybill_bid 
+			AND pob.dr = 0
+			LEFT JOIN bd_invbasdoc bd ON bd.pk_invbasdoc = pb.cbaseid 
+		WHERE
+			pb.dr = 0 
+			AND pb.p_receive_time IS NOT NULL 
+			AND pob.cupsourcebillrowid IS NULL 
+			AND pb.vdef15 IS NOT NULL 
+			AND pb.vdef15 >= DATE_FORMAT( NOW( ), '%Y-%m-%d' ) 
+			AND pb.vdef15 <= DATE_FORMAT( DATE_ADD( NOW( ), INTERVAL 1 MONTH ), '%Y-%m-%d' ) 
+			AND pb.vdef15 IS NULL 
+			AND pb.dsuggestdate IS NULL 
+			AND DATE_ADD( STR_TO_DATE( pb.p_receive_time, '%Y-%m-%d %H' ), INTERVAL 70 DAY ) >= NOW( ) 
+			AND DATE_ADD( STR_TO_DATE( pb.p_receive_time, '%Y-%m-%d %H' ), INTERVAL 40 DAY ) <= NOW( ) 
+		) t 
+	);
+	
+	
+	
+//逾期未到货 8055（6）
+
+update po_praybill_b_copy1
+set c_currentstatus = 6
+where  CPRAYBILL_BID in 
+(
+SELECT
+		CPRAYBILL_BID 
+	FROM
+		(
+		SELECT
+			pb.CPRAYBILL_BID 
+		FROM
+			po_praybill_b_copy1 pb
+			LEFT JOIN po_order_b_copy1 pob ON pob.cupsourcebillrowid = pb.cpraybill_bid 
+			AND pob.dr = 0
+			LEFT JOIN bd_invbasdoc bd ON bd.pk_invbasdoc = pb.cbaseid 
+		WHERE
+			pb.dr = 0 
+			AND pb.p_receive_time IS NOT NULL 
+			AND pob.cupsourcebillrowid IS NULL 
+			AND pb.vdef15 IS NOT NULL AND pb.vdef15 < DATE_FORMAT( NOW(), '%Y-%m-%d' ) 
+		) t 
+		
+		UNION 
+SELECT
+		CPRAYBILL_BID 
+	FROM
+		(
+		SELECT
+			pb.CPRAYBILL_BID 
+		FROM
+			po_praybill_b_copy1 pb
+			LEFT JOIN po_order_b_copy1 pob ON pob.cupsourcebillrowid = pb.cpraybill_bid 
+			AND pob.dr = 0
+			LEFT JOIN bd_invbasdoc bd ON bd.pk_invbasdoc = pb.cbaseid 
+		WHERE
+			pb.dr = 0 
+			AND pb.p_receive_time IS NOT NULL 
+			AND pob.cupsourcebillrowid IS NULL 
+			AND pb.vdef15 IS NULL AND pb.dsuggestdate IS NOT NULL AND pb.dsuggestdate < DATE_FORMAT( NOW(), '%Y-%m-%d' ) 
+		) t 
+		
+		UNION 
+		SELECT
+		CPRAYBILL_BID 
+	FROM
+		(
+		SELECT
+			pb.CPRAYBILL_BID 
+		FROM
+			po_praybill_b_copy1 pb
+			LEFT JOIN po_order_b_copy1 pob ON pob.cupsourcebillrowid = pb.cpraybill_bid 
+			AND pob.dr = 0
+			LEFT JOIN bd_invbasdoc bd ON bd.pk_invbasdoc = pb.cbaseid 
+		WHERE
+			pb.dr = 0 
+			AND pb.p_receive_time IS NOT NULL 
+			AND pob.cupsourcebillrowid IS NULL 
+		AND	pb.vdef15 IS NULL AND pb.dsuggestdate IS NULL 
+		AND DATE_ADD( STR_TO_DATE( LEFT(pb.p_receive_time, 10), '%Y-%m-%d' ), INTERVAL 70 DAY ) < NOW() 
+		) t 
+);
+
+
+// 部分到货 1065(5)
+UPDATE po_praybill_b_copy1 
+SET c_currentstatus = 5 
+WHERE
+	CPRAYBILL_BID IN (select CPRAYBILL_BID from (
+SELECT
+ bill.CPRAYBILL_BID
+FROM
+	po_praybill_b_copy1 bill 
+	
+WHERE
+	bill.c_total_purchase_order_num IS NOT NULL 
+	AND bill.c_total_purchase_order_num > 0 
+	AND bill.c_total_purchase_order_num < bill.NPRAYNUM 
+	AND bill.DR = 0
+) t);
+
+
+// 完全到货 127231(2)
+UPDATE po_praybill_b_copy1 
+SET c_currentstatus = 2 
+WHERE
+	CPRAYBILL_BID IN (select CPRAYBILL_BID from (
+SELECT
+	CPRAYBILL_BID
+FROM
+	po_praybill_b_copy1 bill  
+WHERE
+	bill.c_total_purchase_order_num IS NOT NULL 
+	AND bill.c_total_purchase_order_num >= bill.NPRAYNUM 
+	AND bill.DR = 0
+) t);
