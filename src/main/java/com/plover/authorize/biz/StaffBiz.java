@@ -1,19 +1,24 @@
 package com.plover.authorize.biz;
 
 import com.plover.authorize.common.PageList;
+import com.plover.authorize.data.RoleAppResourceData;
+import com.plover.authorize.entity.AppEntity;
 import com.plover.authorize.entity.StaffEntity;
 import com.plover.authorize.form.StaffQueryForm;
+import com.plover.authorize.model.App;
+import com.plover.authorize.model.AppResource;
 import com.plover.authorize.model.Staff;
 import com.plover.authorize.model.StaffRole;
-import com.plover.authorize.service.StaffRoleService;
-import com.plover.authorize.service.StaffService;
+import com.plover.authorize.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,6 +42,15 @@ public class StaffBiz {
     @Autowired
     private StaffRoleService roleService;
 
+    @Autowired
+    private AppService appService;
+
+    @Autowired
+    private AppResourceService appResourceService;
+
+    @Autowired
+    private RoleAppResourceService roleAppResourceService;
+
     /**
      * 列表查询
      *
@@ -46,7 +60,7 @@ public class StaffBiz {
     public PageList<StaffEntity> list(StaffQueryForm queryForm) {
         PageList<StaffEntity> page = new PageList<>();
         List<Staff> staffList = staffService.list(queryForm);
-        List<StaffEntity> entityList = convert(staffList);
+        List<StaffEntity> entityList = convertList(staffList);
         int totalCount = staffService.count(queryForm);
         page.setPageNum(queryForm.pageNum);
         page.setPageSize(queryForm.pageSize);
@@ -62,7 +76,7 @@ public class StaffBiz {
      * @param staffList
      * @return
      */
-    public List<StaffEntity> convert(List<Staff> staffList) {
+    public List<StaffEntity> convertList(List<Staff> staffList) {
         return staffList.stream().map(staff -> {
             StaffEntity staffEntity = new StaffEntity();
             BeanUtils.copyProperties(staff, staffEntity);
@@ -81,6 +95,62 @@ public class StaffBiz {
             return staffEntity;
         }).collect(Collectors.toList());
     }
+
+
+    /**
+     * staff数据转换
+     * staff -->  staffEntity
+     *
+     * @param staff
+     * @return
+     */
+    public StaffEntity getRoleAppResourceInfo(Staff staff) {
+        StaffEntity staffEntity = new StaffEntity();
+        BeanUtils.copyProperties(staff, staffEntity);
+        String role = staff.getRole();
+        if (StringUtils.isNotBlank(role)) {
+            List<StaffRole> roleList = Arrays.stream(role.split(","))
+                    .map(roleId -> roleService.findById(Integer.valueOf(roleId))).collect(Collectors.toList());
+            staffEntity.setRoleList(roleList);
+        }
+        List<App> appList = appService.list();
+        //  获取该 权限在 该app 中的 访问资源集合
+        List<AppEntity> appEntityList = appList.stream().map(app -> {
+            AppEntity appEntity = new AppEntity();
+            BeanUtils.copyProperties(app, appEntity);
+            List<StaffRole> roleList = staffEntity.getRoleList();
+            List<AppResource> appResourceList = new ArrayList<>();
+            roleList.stream().forEach(staffRole -> {
+                List<AppResource> appResources = getAppResourceByAppIdAndRoleId(staffRole.getId(), app.getId());
+                if (!CollectionUtils.isEmpty(appResources)) {
+                    appResourceList.addAll(appResources);
+                }
+            });
+            appEntity.setResourceList(appResourceList);
+            return appEntity;
+        }).collect(Collectors.toList());
+        staffEntity.setAppList(appEntityList);
+        return staffEntity;
+    }
+
+
+    /**
+     * 根据 appId 和 roleId 获取 访问资源集合
+     *
+     * @param roleId
+     * @param appId
+     * @return
+     */
+    public List<AppResource> getAppResourceByAppIdAndRoleId(Integer roleId, Integer appId) {
+        RoleAppResourceData data = roleAppResourceService.findByRoleIdAndAppId(roleId, appId);
+        if (data == null || CollectionUtils.isEmpty(data.getResources())) {
+            return new ArrayList<>();
+        }
+        return data.getResources().stream()
+                .map(id -> appResourceService.findById(id))
+                .collect(Collectors.toList());
+    }
+
 
     /**
      * 新增

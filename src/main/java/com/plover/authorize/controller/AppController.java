@@ -4,7 +4,9 @@ import com.plover.authorize.biz.AppBiz;
 import com.plover.authorize.common.HttpBizCode;
 import com.plover.authorize.common.Response;
 import com.plover.authorize.entity.AppEntity;
+import com.plover.authorize.entity.StaffEntity;
 import com.plover.authorize.model.App;
+import com.plover.authorize.model.AppResource;
 import com.plover.authorize.model.Staff;
 import com.plover.authorize.model.User;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +32,6 @@ public class AppController {
     @Autowired
     private AppBiz appBiz;
 
-
     /**
      * 获取当前用户被授权的App 应用
      */
@@ -48,6 +49,25 @@ public class AppController {
         }
         return resp;
     }
+
+    /**
+     * 根据应用获取当前用户的 授权资源
+     */
+    @GetMapping("/findAppResourceByAppAndStaff")
+    public Response<List<AppResource>> findAppResourceByAppAndStaff(Integer id, HttpServletRequest request) {
+        Response<List<AppResource>> resp = new Response<>();
+        Staff staff = (Staff) request.getSession().getAttribute("user");
+        try {
+            List<AppResource> appResourceList = appBiz.getRoleAppResourceInfo(id, staff);
+            resp.setData(appResourceList);
+        } catch (Exception e) {
+            resp.setCode(HttpBizCode.BIZERROR.getCode());
+            resp.setMessage(e.getMessage());
+            log.error("app findAppResourceByAppAndStaff occur error,staff:[{}]", staff, e);
+        }
+        return resp;
+    }
+
 
     /**
      * 查询所有 app 信息

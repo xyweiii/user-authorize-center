@@ -4,6 +4,7 @@ import com.plover.authorize.common.BaseEntity;
 import com.plover.authorize.model.StaffRole;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -106,10 +107,6 @@ public class StaffEntity extends BaseEntity {
      */
     private String role;
 
-    /**
-     * role 信息
-     */
-    private List<StaffRole> roleList;
 
     /**
      * 状态
@@ -124,4 +121,15 @@ public class StaffEntity extends BaseEntity {
      * 1:已删除
      */
     private int deleted;
+
+    /**
+     * role 信息
+     */
+    private List<StaffRole> roleList = new ArrayList<>();
+
+
+    /**
+     * app 相关资源信息
+     */
+    private List<AppEntity> appList;
 }

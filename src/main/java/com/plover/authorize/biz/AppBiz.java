@@ -1,10 +1,14 @@
 package com.plover.authorize.biz;
 
+import com.plover.authorize.data.RoleAppResourceData;
 import com.plover.authorize.entity.AppEntity;
 import com.plover.authorize.model.App;
+import com.plover.authorize.model.AppResource;
 import com.plover.authorize.model.Staff;
 import com.plover.authorize.model.StaffRole;
+import com.plover.authorize.service.AppResourceService;
 import com.plover.authorize.service.AppService;
+import com.plover.authorize.service.RoleAppResourceService;
 import com.plover.authorize.service.StaffRoleService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -13,13 +17,12 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
@@ -53,6 +56,13 @@ public class AppBiz {
 
     @Autowired
     private StaffRoleService roleService;
+
+    @Autowired
+    private AppResourceService appResourceService;
+
+    @Autowired
+    private RoleAppResourceService roleAppResourceService;
+
 
     /**
      * 根据Staff 获取其被授权的App应用
@@ -96,6 +106,53 @@ public class AppBiz {
         }).collect(Collectors.toList());
         return filterAppList;
     }
+
+
+    /**
+     * 获取该用户在该app中的授权资源信息
+     *
+     * @param id    应用id
+     * @param staff 用户
+     * @return
+     */
+    public List<AppResource> getRoleAppResourceInfo(Integer id, Staff staff) {
+        String role = staff.getRole();
+        List<StaffRole> roleList = new ArrayList<>();
+        if (StringUtils.isNotBlank(role)) {
+            roleList = Arrays.stream(role.split(","))
+                    .map(roleId -> roleService.findById(Integer.valueOf(roleId)))
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
+        }
+        //  获取该 权限在 该app 中的 访问资源集合
+        List<AppResource> appResourceList = new ArrayList<>();
+        roleList.stream().forEach(staffRole -> {
+            List<AppResource> appResources = getAppResourceByAppIdAndRoleId(staffRole.getId(), id);
+            if (!CollectionUtils.isEmpty(appResources)) {
+                appResourceList.addAll(appResources);
+            }
+        });
+        return appResourceList;
+    }
+
+
+    /**
+     * 根据 appId 和 roleId 获取 访问资源集合
+     *
+     * @param roleId
+     * @param appId
+     * @return
+     */
+    public List<AppResource> getAppResourceByAppIdAndRoleId(Integer roleId, Integer appId) {
+        RoleAppResourceData data = roleAppResourceService.findByRoleIdAndAppId(roleId, appId);
+        if (data == null || CollectionUtils.isEmpty(data.getResources())) {
+            return new ArrayList<>();
+        }
+        return data.getResources().stream()
+                .map(id -> appResourceService.findById(id))
+                .collect(Collectors.toList());
+    }
+
 
     /**
      * 获取所有应用列表

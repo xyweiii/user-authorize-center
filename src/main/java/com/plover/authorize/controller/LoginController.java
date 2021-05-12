@@ -1,5 +1,6 @@
 package com.plover.authorize.controller;
 
+import com.plover.authorize.biz.StaffBiz;
 import com.plover.authorize.common.Constants;
 import com.plover.authorize.common.HttpBizCode;
 import com.plover.authorize.common.Response;
@@ -40,6 +41,9 @@ public class LoginController {
     @Autowired
     private StaffService staffService;
 
+    @Autowired
+    private StaffBiz staffBiz;
+
     @Value("${spring.profiles.active}")
     private String env;
 
@@ -51,7 +55,7 @@ public class LoginController {
      */
     @PostMapping(value = "/plat/login")
     public Response<String> login(@RequestParam("userName") String userName, @RequestParam("password") String password, HttpServletRequest request) {
-        log.info("user login , userName:{},password:{}", userName, password);
+        log.info("plat login , userName:{},password:{}", userName, password);
         Response<String> resp = new Response<>();
         userName = userName.trim();
         password = password.trim();
@@ -60,7 +64,6 @@ public class LoginController {
                 resp.fill(HttpBizCode.ILLEGAL, "用户名和密码不能为空");
                 return resp;
             }
-
             if (StringUtils.equals("admin", userName) && StringUtils.equals("123456", password)) {
                 Staff staff = new Staff();
                 staff.setUserName(userName);

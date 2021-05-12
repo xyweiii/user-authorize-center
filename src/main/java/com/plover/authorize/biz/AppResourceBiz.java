@@ -1,17 +1,27 @@
 package com.plover.authorize.biz;
 
 import com.plover.authorize.common.PageList;
+import com.plover.authorize.entity.AppEntity;
 import com.plover.authorize.entity.AppResourceEntity;
+import com.plover.authorize.entity.StaffEntity;
 import com.plover.authorize.form.AppResourceQueryForm;
 import com.plover.authorize.model.App;
 import com.plover.authorize.model.AppResource;
+import com.plover.authorize.model.Staff;
+import com.plover.authorize.model.StaffRole;
 import com.plover.authorize.service.AppResourceService;
 import com.plover.authorize.service.AppService;
+import com.plover.authorize.service.RoleAppResourceService;
+import com.plover.authorize.service.StaffRoleService;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,10 +41,13 @@ public class AppResourceBiz {
 
 
     @Autowired
+    private AppService appService;
+
+    @Autowired
     private AppResourceService resourceService;
 
     @Autowired
-    private AppService appService;
+    private StaffRoleService roleService;
 
     /**
      * 列表查询
@@ -67,6 +80,12 @@ public class AppResourceBiz {
         }
         return resourceService.findByAppId(appId);
     }
+
+
+
+
+
+
 
     /**
      * staff数据转换

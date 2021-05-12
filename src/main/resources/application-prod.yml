@@ -6,8 +6,8 @@ spring:
     name: user-center
   servlet:
     multipart:
-      max-file-size: 100MB
-      max-request-size: 100MB
+      max-file-size: 10MB
+
 
   datasource:
     url: jdbc:mysql://10.123.0.73:3306/authorize_center?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false
@@ -21,7 +21,7 @@ spring:
       idle-timeout: 180000
   data:
     mongodb:
-      host: localhost
+      host: 10.123.0.73
       port: 27017
       database: authorize_center
 
@@ -33,6 +33,23 @@ spring:
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
+
+
+# app 上传文件位置: origin:原始位置  unzip:解压的位置
+app:
+  file:
+    origin: /opt/plover/user-center/file/app/origin/
+    unzip: /opt/plover/user-center/file/app/
+
+# sqlApi 数据源配置
+sqlApi:
+  datasource:
+    url: jdbc:mysql://10.123.0.73:3310/nc560418?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false
+    username: ogg
+    password: ogg
+  query:
+    host: 10.123.0.73
+    port: 8001
 
 logging:
   file.max-history: 2

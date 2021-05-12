@@ -1,6 +1,7 @@
 package com.plover.authorize.entity;
 
 import com.plover.authorize.common.BaseEntity;
+import com.plover.authorize.model.AppResource;
 import com.plover.authorize.model.StaffRole;
 import lombok.Data;
 
@@ -73,4 +74,9 @@ public class AppEntity extends BaseEntity {
      * 角色
      */
     private List<StaffRole> roleList;
+
+    /**
+     * app资源
+     */
+    private List<AppResource> resourceList;
 }
