@@ -1,8 +1,10 @@
 package com.plover.authorize.service.impl;
 
+import com.google.common.collect.Lists;
 import com.plover.authorize.form.StaffQueryForm;
 import com.plover.authorize.mapper.StaffMapper;
 import com.plover.authorize.model.Staff;
+import com.plover.authorize.model.StaffRole;
 import com.plover.authorize.service.StaffService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,6 +73,37 @@ public class StaffServiceImpl implements StaffService {
             return null;
         }
         return staffMapper.findByUserName(userName);
+    }
+
+
+    /**
+     * 根据 psnCode 查询
+     *
+     * @param psnCode
+     * @return
+     */
+    @Override
+    public Staff findByPsnCode(String psnCode) {
+        if (StringUtils.isBlank(psnCode)) {
+            return null;
+        }
+        return staffMapper.findByPsnCode(psnCode);
+    }
+
+
+    /**
+     * 根据某个角色查询
+     *
+     * @param roleId 角色id
+     * @return
+     * @see StaffRole#getId()
+     */
+    @Override
+    public List<Staff> findByRoleId(Integer roleId) {
+        if (roleId == null) {
+            return Lists.newArrayList();
+        }
+        return staffMapper.findByRoleId(roleId);
     }
 
     /**

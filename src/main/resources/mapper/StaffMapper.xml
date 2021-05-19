@@ -29,10 +29,11 @@
         <result column="updateBy" jdbcType="VARCHAR" property="updateBy"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, userName, email, realName, idNumber, mobile, sex, birthDay, ntPlaceCode, ntPlaceName, 
+        id
+        , userName, email, realName, idNumber, mobile, sex, birthDay, ntPlaceCode, ntPlaceName,
     birthPlaceCode, birthPlaceName, nation, marriage, permanreside, address, technical, psnCode,
     role,status, deleted, createDate, createBy, updateDate, updateBy
-  </sql>
+    </sql>
 
     <select id="list" parameterType="com.plover.authorize.form.StaffQueryForm" resultMap="BaseResultMap">
         select
@@ -74,11 +75,25 @@
         where id = #{id,jdbcType=INTEGER}
     </select>
 
-    <select id="findByUserName" resultType="com.plover.authorize.model.Staff">
+    <select id="findByUserName" parameterType="java.lang.String" resultType="com.plover.authorize.model.Staff">
         select
         <include refid="Base_Column_List"/>
         from staff
-        where deleted = 0 and userName = #{userName,jdbcType=INTEGER}
+        where deleted = 0 and userName = #{userName,jdbcType=VARCHAR}
+    </select>
+
+    <select id="findByPsnCode" resultType="com.plover.authorize.model.Staff">
+        select
+        <include refid="Base_Column_List"/>
+        from staff
+        where deleted = 0 and psnCode = #{psnCode,jdbcType=VARCHAR}
+    </select>
+
+    <select id="findByRoleId" parameterType="java.lang.Integer" resultType="com.plover.authorize.model.Staff">
+        select
+        <include refid="Base_Column_List"/>
+        from staff
+        where deleted = 0 and `role` like concat ('%' , #{roleId} ,'%')
     </select>
 
     <insert id="add" parameterType="com.plover.authorize.model.Staff">
@@ -134,6 +149,9 @@
             </if>
             <if test="technical != null">
                 technical,
+            </if>
+            <if test="psnCode != null">
+                psnCode,
             </if>
             <if test="role != null">
                 role,
@@ -205,6 +223,9 @@
             <if test="technical != null">
                 #{technical,jdbcType=VARCHAR},
             </if>
+            <if test="psnCode != null">
+                #{psnCode},
+            </if>
             <if test="role != null">
                 #{role,jdbcType=VARCHAR},
             </if>
@@ -275,6 +296,9 @@
             <if test="technical != null">
                 technical = #{technical,jdbcType=VARCHAR},
             </if>
+            <if test="psnCode != null">
+                psnCode = #{psnCode,jdbcType=VARCHAR},
+            </if>
             <if test="role != null">
                 role = #{role,jdbcType=VARCHAR},
             </if>
@@ -293,8 +317,10 @@
     </update>
 
     <update id="deleteById">
-     update  staff set deleted = 1,updateBy=#{updateBy}
-     where id = #{id,jdbcType=INTEGER}
+        update staff
+        set deleted = 1,
+            updateBy=#{updateBy}
+        where id = #{id,jdbcType=INTEGER}
     </update>
 
 </mapper>

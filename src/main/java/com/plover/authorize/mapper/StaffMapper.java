@@ -51,6 +51,23 @@ public interface StaffMapper {
     Staff findByUserName(String userName);
 
     /**
+     * 根据 psnCode 查询
+     *
+     * @param psnCode
+     * @return
+     */
+    Staff findByPsnCode(String psnCode);
+
+
+    /**
+     * 根据 角色id 查询
+     *
+     * @param roleId
+     * @return
+     */
+    List<Staff> findByRoleId(Integer roleId);
+
+    /**
      * 新增
      *
      * @param staff

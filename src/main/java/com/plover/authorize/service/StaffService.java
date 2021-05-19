@@ -2,6 +2,7 @@ package com.plover.authorize.service;
 
 import com.plover.authorize.form.StaffQueryForm;
 import com.plover.authorize.model.Staff;
+import com.plover.authorize.model.StaffRole;
 
 import java.util.List;
 
@@ -45,6 +46,23 @@ public interface StaffService {
      * @return
      */
     Staff findByUserName(String userName);
+
+    /**
+     * 根据 psnCode 查询
+     *
+     * @param psnCode
+     * @return
+     */
+    Staff findByPsnCode(String psnCode);
+
+    /**
+     * 根据某个角色查询
+     *
+     * @param roleId 角色id
+     * @return
+     * @see StaffRole#getId()
+     */
+    List<Staff> findByRoleId(Integer roleId);
 
     /**
      * 新增

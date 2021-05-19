@@ -22,6 +22,6 @@ public class WebAppConfigurer implements WebMvcConfigurer {
         registry.addInterceptor(corsInterceptor);
         registry.addInterceptor(loginInterceptor)
                 .excludePathPatterns("/plat/login", "/manage/login", "/user/getCurrentUser",
-                        "/app/addByNiRong", "/app/uploadFile");
+                        "/app/addByNiRong", "/app/uploadFile","/warnTaskMsg/**");
     }
 }

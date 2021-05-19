@@ -8,6 +8,7 @@ import lombok.Data;
 import java.util.List;
 
 /**
+ * 预警任务执行日志
  * Project:user-center
  * Package: com.plover.user.entity
  *

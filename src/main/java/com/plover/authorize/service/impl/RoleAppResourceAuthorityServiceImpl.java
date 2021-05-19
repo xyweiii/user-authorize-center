@@ -26,7 +26,6 @@ public class RoleAppResourceAuthorityServiceImpl implements RoleAppResourceAutho
     @Autowired
     private MongoTemplate mongoTemplate;
 
-
     /**
      * 根据 roleId,resourceId 查询
      *
